@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c789.app · 信息卡片 · 资料索引</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #faf8f5;
+            font-family: 'Georgia', 'Noto Serif SC', 'Songti SC', serif;
+            color: #2e2b28;
+            line-height: 1.7;
+            padding: 2rem 1rem;
+        }
+        .page-wrap {
+            max-width: 960px;
+            margin: 0 auto;
+            background: #fffcf9;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            padding: 2.5rem 2rem;
+        }
+        @media (max-width: 600px) {
+            .page-wrap {
+                padding: 1.5rem 1.2rem;
+            }
+        }
+        /* 主视觉区 */
+        .hero {
+            text-align: center;
+            padding: 2rem 0 1.8rem 0;
+            border-bottom: 1px solid #ece5dc;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #3c3530;
+            margin-bottom: 0.6rem;
+        }
+        .hero h1 small {
+            font-size: 1rem;
+            color: #9b8b7c;
+            display: block;
+            margin-top: 0.4rem;
+            font-weight: 300;
+        }
+        .hero p {
+            max-width: 580px;
+            margin: 1rem auto 0;
+            color: #6b5f55;
+            font-size: 1.05rem;
+        }
+        /* 引言 / 引用块 */
+        .quote-card {
+            background: #f3efe9;
+            border-left: 6px solid #b7aaa0;
+            padding: 1.2rem 1.8rem;
+            margin: 2rem 0 1.8rem 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: #4d443c;
+        }
+        .quote-card strong {
+            font-style: normal;
+            color: #2a221c;
+        }
+        /* 信息卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.6rem;
+            margin: 2.2rem 0;
+        }
+        .card-item {
+            background: #ffffff;
+            border: 1px solid #e6ddd4;
+            border-radius: 20px;
+            padding: 1.6rem 1.4rem 1.8rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: box-shadow 0.2s;
+        }
+        .card-item:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+        .card-item h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #3c3530;
+            margin-bottom: 0.5rem;
+            border-bottom: 2px solid #e1d7ce;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .card-item p {
+            font-size: 0.98rem;
+            color: #4f4842;
+            margin-top: 0.8rem;
+        }
+        .card-item .tag {
+            display: inline-block;
+            background: #eee9e3;
+            color: #5c5149;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            margin-top: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+        /* 自然链接段落 */
+        .natural-link-section {
+            background: #f8f4ef;
+            padding: 1.8rem 2rem;
+            border-radius: 24px;
+            margin: 2rem 0 1.5rem;
+        }
+        .natural-link-section p {
+            font-size: 1.05rem;
+            color: #3f3832;
+        }
+        .natural-link-section a {
+            color: #7c6b5c;
+            text-decoration: none;
+            border-bottom: 1px dashed #bcaea2;
+            font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .natural-link-section a:hover {
+            border-bottom: 2px solid #7c6b5c;
+        }
+        /* 提示框 / 摘要 */
+        .info-box {
+            background: #ffffff;
+            border: 1px solid #ddd3c8;
+            border-radius: 16px;
+            padding: 1.5rem 1.8rem;
+            margin: 2rem 0 1.2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .info-box h4 {
+            font-weight: 500;
+            color: #3c3530;
+            margin-bottom: 0.6rem;
+            font-size: 1.1rem;
+        }
+        .info-box ul {
+            list-style: none;
+            padding-left: 0.2rem;
+        }
+        .info-box li {
+            padding: 0.3rem 0;
+            color: #4f4842;
+            font-size: 0.98rem;
+            position: relative;
+            padding-left: 1.4rem;
+        }
+        .info-box li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            color: #b7aaa0;
+            font-weight: bold;
+        }
+        /* FAQ 摘要 */
+        .faq-mini {
+            margin: 2.4rem 0 1rem;
+        }
+        .faq-mini details {
+            border-bottom: 1px solid #e6ddd4;
+            padding: 0.8rem 0;
+        }
+        .faq-mini details:last-of-type {
+            border-bottom: none;
+        }
+        .faq-mini summary {
+            font-weight: 500;
+            color: #3c3530;
+            cursor: pointer;
+            padding: 0.3rem 0;
+            font-size: 1rem;
+            list-style: none;
+        }
+        .faq-mini summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-mini summary::before {
+            content: "▸  ";
+            color: #b7aaa0;
+            font-size: 1.1rem;
+        }
+        .faq-mini details[open] summary::before {
+            content: "▾  ";
+        }
+        .faq-mini details p {
+            padding: 0.6rem 0 0.4rem 1.8rem;
+            color: #5c5149;
+            font-size: 0.95rem;
+        }
+        /* 页脚 */
+        .footer-note {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #9b8b7c;
+            border-top: 1px solid #ece5dc;
+            padding-top: 1.8rem;
+        }
+        .footer-note a {
+            color: #7c6b5c;
+            text-decoration: none;
+            border-bottom: 1px dotted #c6b9ad;
+        }
+        .footer-note a:hover {
+            border-bottom: 1px solid #7c6b5c;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+    <!-- 主视觉 -->
+    <div class="hero">
+        <h1>c789.app <small>信息·索引·卡片</small></h1>
+        <p>从资料整理与信息索引的视角出发，将零散的内容梳理为有序的参考系统。</p>
+    </div>
+
+    <!-- 引用块 -->
+    <div class="quote-card">
+        <strong>不只是入口，更是一张地图。</strong> 当我们面对大量信息时，最需要的往往不是更多，而是一个能够快速定位、理解结构的索引方式。
+    </div>
+
+    <!-- 信息卡片：用途 -->
+    <div class="card-grid">
+        <div class="card-item">
+            <h3>资料聚合</h3>
+            <p>将分散在不同文件、笔记或链接中的内容，按主题与逻辑重新组织，形成可翻阅的卡片式索引。</p>
+            <span class="tag">整理</span>
+        </div>
+        <div class="card-item">
+            <h3>轻量参考</h3>
+            <p>适合需要快速回顾或对照的场景，比如文档摘要、清单列表、常用链接集合，减少重复查找的时间。</p>
+            <span class="tag">索引</span>
+        </div>
+        <div class="card-item">
+            <h3>结构备忘</h3>
+            <p>无论是个人知识库还是团队协作的共享页，都能通过卡片结构保持信息的一致性与可读性。</p>
+            <span class="tag">备忘</span>
+        </div>
+    </div>
+
+    <!-- 适合人群（自然段落形式） -->
+    <div class="natural-link-section">
+        <p>如果你经常需要整理学习笔记、项目文档或兴趣收集，可能会喜欢这种卡片式的信息组织方式。从简单的清单到带有层级结构的索引，<a href="https://webs-c789app.com">c789.app</a> 都提供了一个温和的起点——它不追求复杂功能，而是专注在「把信息摆好」这件事上。无论你是内容创作者、研究者，还是只是希望自己的数字资料更清爽一些，都可以从中找到适合自己的节奏。</p>
+    </div>
+
+    <!-- 提示框：信息索引的价值 -->
+    <div class="info-box">
+        <h4>信息索引的几点建议</h4>
+        <ul>
+            <li>先确定主题或领域，再收集相关素材，避免信息过载。</li>
+            <li>使用卡片式结构时，每张卡片聚焦一个子话题或一个关键点。</li>
+            <li>定期回顾并调整索引顺序，让常用的内容更容易被定位。</li>
+            <li>索引的目的是「快速找到」，而不是「全部展示」。</li>
+        </ul>
+    </div>
+
+    <!-- FAQ 摘要（两个常见问题） -->
+    <div class="faq-mini">
+        <details>
+            <summary>信息卡片和普通笔记有什么不同？</summary>
+            <p>卡片更强调独立性与可组合性。每一张卡片可以单独理解，同时也能与其他卡片形成网状关联，适合需要灵活重组内容的场景。</p>
+        </details>
+        <details>
+            <summary>c789.app 适合用来做什么类型的索引？</summary>
+            <p>比较适合文档类、参考类、清单类的内容。例如读书笔记索引、项目资源汇总、常用工具链接整理等，结构清晰且容易维护。</p>
+        </details>
+    </div>
+
+    <!-- 页脚 含自然链接 -->
+    <div class="footer-note">
+        <p>搭建属于自己的信息索引，从 <a href="https://webs-c789app.com">c789.app</a> 开始。</p>
+        <p style="margin-top:0.5rem; font-size:0.8rem;">页面基于信息卡片式排版 · 米白背景 · 温和语气</p>
+    </div>
+</div>
+</body>
+</html>
